@@ -33,6 +33,7 @@ RUN apt-get update && \
         tigervnc-standalone-server \
         novnc \
         python3-websockify \
+        dbus \
         dbus-x11 \
         policykit-1 \
         x11-utils \

@@ -16,10 +16,21 @@ sleep 1
 
 # 1. 启动 TigerVNC（显示 :1 → 端口 5901，仅监听 localhost，经 noVNC 代理对外）
 mkdir -p ~/.vnc
-Xvnc :1 -geometry 1920x1080 -depth 24 -localhost -noreset \
-  -SecurityTypes VncAuth -PasswordFile "$HOME/.vnc/passwd" >/tmp/xvnc.log 2>&1 &
+Xvnc :1 \
+  -geometry 1920x1080 \
+  -depth 24 \
+  -localhost \
+  -noreset \
+  -SecurityTypes VncAuth \
+  -PasswordFile "$HOME/.vnc/passwd" \
+  >/tmp/xvnc.log 2>&1 &
+
+XVNC_PID=$!
 
 # 2. 等待 X 就绪（最多 30 秒）
+# 等待 Xvnc 就绪
+VNC_READY=0
+
 for _ in $(seq 1 30); do
   if ! kill -0 "$XVNC_PID" 2>/dev/null; then
     echo "Xvnc 启动失败："
@@ -27,13 +38,14 @@ for _ in $(seq 1 30); do
     exit 1
   fi
 
-  if timeout 2 bash -c 'exec 3<>/dev/tcp/127.0.0.1/5901' 2>/dev/null; then
-    exec 3>&-
+  if ss -lnt | grep -q ':5901 '; then
+    VNC_READY=1
     break
   fi
 
   sleep 1
 done
+
 
 # 3. 启动桌面会话（VNC_DESKTOP=ukui 时优先 UKUI，8 秒看门狗；默认 Xfce）
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
