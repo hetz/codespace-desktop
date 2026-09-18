@@ -1,10 +1,23 @@
 {
+  "name": "openKylin 3.0 Desktop VNC",
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "remoteUser": "codespace",
   "privileged": true,
   "forwardPorts": [6080],
-  "runArgs": ["--cap-add=SYS_ADMIN","--shm-size=512m"],
-  "postStartCommand": "nohup /usr/local/bin/vnc-start.sh > /tmp/vnc-start.log 2>&1 &"
+  "portsAttributes": {
+    "6080": {
+      "label": "noVNC Desktop",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "runArgs": ["--cap-add=SYS_ADMIN"],
+  "remoteUser": "vscode",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postStartCommand": "bash .devcontainer/start-vnc.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": []
+    }
+  }
 }
