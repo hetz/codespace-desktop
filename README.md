@@ -1,4 +1,16 @@
-# Cinnamon Desktop On Github Codespace
+#  OpenKylin Desktop On Github Codespace
+
+
+
+```bash
+docker run -it --rm -u codespace \
+-p 5901:5901 \
+-p 6080:6080 \
+-e HOME=/home/codespace \
+openkylin-vnc:final \
+bash -c '/usr/local/bin/vnc-start.sh'
+```
+
 This setup installs an Ubuntu 24.04 container with the Cinnamon desktop environment and configures a VNC connection.
 
 Running a desktop environment in Codespaces is generally permitted, as Microsoft themselves provide documentation for setting up a Fluxbox-based desktop with a browser: https://github.com/devcontainers/features/tree/main/src/desktop-lite. In this case, we’ll be using Cinnamon instead. You don’t need to worry about account issues as long as you use the service responsibly and stay within GitHub’s Terms of Service.
