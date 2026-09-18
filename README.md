@@ -11,10 +11,13 @@ bash -c '/usr/local/bin/vnc-start.sh'
 
 # How to use
 1. Create a new space: https://github.com/codespaces/new
-2. Select this repo `AndnixSH/codespace-desktop`
+2. Select this repo `hetz/codespace-desktop`
+2. Select this Branch `openkylin3`
 3. Select a machine type. To unlock better machine types, file a ticket to Github: https://support.github.com/contact?tags=rr-codespaces%2Ccat_codespace
 4. Click "Create codespace". It will take a while to create
 5. Once created, open PORTS tab, open forwarded address, click on `vnc.html` link and enter your VNC password
+
+https://github.com/codespaces/new?skip_quickstart=true&machine=standardLinux32gb&repo=1374824990&ref=openkylin3&devcontainer_path=.devcontainer%2Fdevcontainer.json&geo=SoutheastAsia
 
 The default VNC password is just `password`. You can change it using `vncpasswd` in Terminal. You don't need to worry about weak password because the vnc ports are not public by default, accessing the ports requires your Github account to be logged in. This makes it a lot secure
 
