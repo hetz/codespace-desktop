@@ -6,6 +6,5 @@
   "privileged": true,
   "forwardPorts": [6080],
   "runArgs": ["--cap-add=SYS_ADMIN","--shm-size=512m"],
-  "postCreateCommand": "mkdir -p ~/.vnc && printf 'password\n' | vncpasswd -f > ~/.vnc/passwd && chmod 600 ~/.vnc/passwd",
-  "postStartCommand": "vncserver :1 -geometry 1600x900 -depth 24 -localhost no && nohup /usr/share/novnc/utils/novnc_proxy --vnc 127.0.0.1:5901 --listen 0.0.0.0:6080 >/tmp/novnc.log 2>&1 &"
+  "postStartCommand": "nohup /usr/local/bin/vnc-start.sh > /tmp/vnc-start.log 2>&1 &"
 }
