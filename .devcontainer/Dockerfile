@@ -40,7 +40,6 @@ RUN apt-get update && \
         fonts-wqy-zenhei \
         fonts-noto-cjk \
         firefox \
-        kylin-software-center \
         htop git curl wget ca-certificates sudo locales && \
     rm -rf /var/lib/apt/lists/*
 
