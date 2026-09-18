@@ -40,6 +40,7 @@ RUN apt-get update && \
         fonts-wqy-zenhei \
         fonts-noto-cjk \
         firefox \
+        kylin-software-center \
         htop git curl wget ca-certificates sudo locales && \
     rm -rf /var/lib/apt/lists/*
 
@@ -56,5 +57,13 @@ RUN useradd -m -u 1000 -s /bin/bash vscode && \
 # 允许 vscode 用户访问图形/X 相关资源
 RUN usermod -aG video,audio vscode || true
 
+RUN set -eux; \
+    url="$(curl -fsSL 'https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-deb' | \
+        python3 -c 'import json,sys; print(json.load(sys.stdin)["url"])'); \
+    curl -fL "$url" -o /tmp/workbuddy.deb; \
+    dpkg-deb -I /tmp/workbuddy.deb | sed -n '1,35p'; \
+    apt-get install -y /tmp/workbuddy.deb; \
+    rm -f /tmp/workbuddy.deb
+    
 USER vscode
 WORKDIR /home/vscode

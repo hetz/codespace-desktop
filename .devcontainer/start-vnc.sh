@@ -16,12 +16,22 @@ sleep 1
 
 # 1. 启动 TigerVNC（显示 :1 → 端口 5901，仅监听 localhost，经 noVNC 代理对外）
 mkdir -p ~/.vnc
-Xvnc :1 -geometry 1920x1080 -depth 24 -localhost \
+Xvnc :1 -geometry 1920x1080 -depth 24 -localhost -noreset \
   -SecurityTypes VncAuth -PasswordFile "$HOME/.vnc/passwd" >/tmp/xvnc.log 2>&1 &
 
 # 2. 等待 X 就绪（最多 30 秒）
 for _ in $(seq 1 30); do
-  if DISPLAY=:1 xdpyinfo >/dev/null 2>&1; then break; fi
+  if ! kill -0 "$XVNC_PID" 2>/dev/null; then
+    echo "Xvnc 启动失败："
+    cat /tmp/xvnc.log
+    exit 1
+  fi
+
+  if timeout 2 bash -c 'exec 3<>/dev/tcp/127.0.0.1/5901' 2>/dev/null; then
+    exec 3>&-
+    break
+  fi
+
   sleep 1
 done
 
