@@ -57,6 +57,9 @@ RUN useradd -m -u 1000 -s /bin/bash vscode && \
 # 允许 vscode 用户访问图形/X 相关资源
 RUN usermod -aG video,audio vscode || true
 
+# 安装 WorkBuddy 下载地址
+# 官方：https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-deb
+# 麒麟：https://software.openkylin.top/openkylin/yangtze/pool/main/deb/workbuddy/
 RUN set -eux; \
     url="$(curl -fsSL 'https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-deb' | \
         python3 -c 'import json,sys; print(json.load(sys.stdin)["url"])'); \
@@ -64,6 +67,6 @@ RUN set -eux; \
     dpkg-deb -I /tmp/workbuddy.deb | sed -n '1,35p'; \
     apt-get install -y /tmp/workbuddy.deb; \
     rm -f /tmp/workbuddy.deb
-    
+
 USER vscode
 WORKDIR /home/vscode
